@@ -5,11 +5,28 @@
 /**
  * Computes the sum of three bits.
  */
-CHIP FullAdder {
+ CHIP FullAdder {
     IN a, b, c;  // 1-bit inputs
     OUT sum,     // Right bit of a + b + c
         carry;   // Left bit of a + b + c
 
     PARTS:
-    //// Replace this comment with your code.
+    Xor(a=a,b=b,out=absum);
+    And(a=a,b=b,out=abcar);
+
+    Xor(a=absum,b=c,out=sum);
+    And(a=absum,b=c,out=abcand);
+    Or(a=abcar,b=abcand,out=carry);
 }
+
+/*       a b a b
+| a | b |sum|car| c |sum|carry|
+| 0 | 0 | 0 | 0 | 0 | 0 |  0  |
+| 0 | 0 | 0 | 0 | 1 | 1 |  0  |
+| 0 | 1 | 1 | 0 | 0 | 1 |  0  |
+| 0 | 1 | 1 | 0 | 1 | 0 |  1  |
+| 1 | 0 | 1 | 0 | 0 | 1 |  0  |
+| 1 | 0 | 1 | 0 | 1 | 0 |  1  |
+| 1 | 1 | 0 | 1 | 0 | 0 |  1  |
+| 1 | 1 | 0 | 1 | 1 | 1 |  1  |
+*/
